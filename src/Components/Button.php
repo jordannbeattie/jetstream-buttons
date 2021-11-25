@@ -27,6 +27,7 @@ class Button extends Component
     
     public function removeToggle( $string )
     {
+        return $string;
         // If $string contains $toggle(''), remove those characters to just leave the model that has been passed in.
         // Used when setting targets/disableTargets
         $characters = [
