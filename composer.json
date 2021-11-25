@@ -1,0 +1,19 @@
+{
+    "name": "jordanbeattie/jetstream-buttons",
+    "require": {
+        "livewire/livewire": "^2.0",
+        "laravel/jetstream": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jordanbeattie\\JetstreamButtons\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jordanbeattie\\JetstreamButtons\\JetstreamButtonsServiceProvider"
+            ]
+        }
+    }
+}
