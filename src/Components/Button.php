@@ -15,7 +15,7 @@ class Button extends Component
         $this->click = $click;
         $this->copy = $copy;
         $this->target = $this->getTarget( $target );
-        $this->disableTarget = $this->getDisableTarget( $disableTarget );
+        $this->disableTarget = $this->getDisableTarget( $disableTarget, $target );
         $this->variation = $this->getVariation( $variation );
         $this->livewire = Str::contains( $click, ['/', '#', ':'] ) ? false : true;
     }
@@ -25,23 +25,40 @@ class Button extends Component
         return view('buttons::components.jetstream-buttons.variations.' . $this->variation);
     }
     
-    public function removeToggle( $string )
+    public function format( $string )
     {
-        return $string;
         // If $string contains $toggle(''), remove those characters to just leave the model that has been passed in.
         // Used when setting targets/disableTargets
-        $characters = [
-            "$",
-            "toggle",
-            "(",
-            "'",
-            ")"
-        ];
-        foreach( $characters as $character )
+        $string_arr = explode(",", $string);
+    
+        $return_string = [];
+    
+        foreach($string_arr as $func)
         {
-            $string = Str::remove($character, $string);
+            $func = trim($func);
+        
+            // get model from $toggle() functions
+            if(Str::contains($func, '$toggle'))
+            {
+                $model = Str::before(Str::after($func, "("), ")");
+                $model = Str::remove(["'", '"'], $model);
+                array_push($return_string, $model);
+            }
+            
+            // get functions
+            elseif(Str::contains($func, '('))
+            {
+                array_push($return_string, Str::before($func, '('));
+            }
+            
+            //push what was passed
+            else
+            {
+                array_push($return_string, $func);
+            }
+            
         }
-        return $string;
+        return implode(", ", array_unique($return_string));
     }
     
     public function getTarget( $target )
@@ -49,12 +66,12 @@ class Button extends Component
         if(is_null( $target ))
         {
             // If no target is set, use the content from $click
-            return $this->removeToggle( $this->click );
+            return $this->format( $this->click );
         }
         elseif( !Str::contains($target, $this->click) )
         {
             // If a $target is set and does not include the $click, append the $click without the $toggle function
-            return $this->removeToggle($target . ", " . $this->click );
+            return $this->format($target . ", " . $this->click );
         }
         else
         {
@@ -63,23 +80,19 @@ class Button extends Component
         }
     }
     
-    public function getDisableTarget( $disableTarget )
+    public function getDisableTarget( $disableTarget, $target )
     {
         if(is_null( $disableTarget ))
         {
             // If no $disableTarget is set, use the content from $target
             return $this->target;
         }
-        elseif( !Str::contains($disableTarget, $this->target) )
+        elseif( !(Str::contains($disableTarget, $this->target)) )
         {
-            // If a $disableTarget is set and does not include the $target, append the $target
-            return $this->removeToggle($disableTarget . ", " . $this->target);
+            // automaticall include the $target
+            return $this->format( $disableTarget . ", " . $this->target);
         }
-        else
-        {
-            // return the passed in $disableTarget without any $toggles
-            return $this->removeToggle($disableTarget);
-        }
+        return $this->format( $disableTarget );
     }
     
     public function getVariation($variation)
