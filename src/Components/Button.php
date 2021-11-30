@@ -45,12 +45,6 @@ class Button extends Component
                 array_push($return_string, $model);
             }
             
-            // get functions
-            elseif(Str::contains($func, '('))
-            {
-                array_push($return_string, Str::before($func, '('));
-            }
-            
             //push what was passed
             else
             {
