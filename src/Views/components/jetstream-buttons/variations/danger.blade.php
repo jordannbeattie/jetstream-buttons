@@ -12,8 +12,8 @@
 		</div>
 	</x-jet-danger-button>
 @else
-	<a href="{{ $click }}" {{ $attributes }}>
-		<x-jet-danger-button>
+	<a href="{{ $click }}">
+		<x-jet-danger-button {{ $attributes }}>
 			@if( $slot->isNotEmpty() )
 				{{ $slot }}
 			@else
