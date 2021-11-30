@@ -13,7 +13,7 @@ class Danger extends Button
     
     public function __construct( $click, $target = null, $copy = null, $disableTarget = null )
     {
-        parent::__construct( $click, $target, $copy, $disableTarget,  "danger" );
+        parent::__construct( $click, $target, $copy = $copy ?? "Delete", $disableTarget,  "danger" );
     }
     
 }

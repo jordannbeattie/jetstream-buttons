@@ -13,7 +13,7 @@ class Primary extends Button
     
     public function __construct( $click, $target = null, $copy = null, $disableTarget = null )
     {
-        parent::__construct( $click, $target, $copy, $disableTarget, "primary" );
+        parent::__construct( $click, $target, $copy = $copy ?? "Save", $disableTarget, "primary" );
     }
     
 }

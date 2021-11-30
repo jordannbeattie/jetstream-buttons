@@ -13,7 +13,7 @@ class Secondary extends Button
     
     public function __construct( $click, $target = null, $copy = null, $disableTarget = null )
     {
-        parent::__construct( $click, $target, $copy, $disableTarget, "secondary" );
+        parent::__construct( $click, $target, $copy = $copy ?? "Cancel", $disableTarget, "secondary" );
     }
     
 }
